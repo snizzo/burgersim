@@ -15,7 +15,7 @@ Item {
     MenuScene {
         id: menuScene
         onGamePressed: {
-            mainItem.state = "game"
+            mainItem.state = "levelselect"
         }
 
         onBackButtonPressed: {
@@ -32,6 +32,29 @@ Item {
             }
         }
     }
+
+
+
+    LevelSelectScene {
+        id: levelSelectScene
+
+        onBackButtonPressed: {
+            mainItem.state = "menu"
+        }
+
+        /*
+        onMenuPressed: {
+            mainItem.state = "menu"
+        }
+        onNetworkPressed: {
+            vplayGameNetworkScene.initialStateBeforeShow = "game"
+            mainItem.state = "gameNetwork"
+        }
+        onUseCoinsPressed: {
+        }
+        */
+    }
+
 
     /*
     GameScene {
@@ -63,15 +86,9 @@ Item {
             }
         },
         State {
-            name: "game"
-            PropertyChanges {target: gameScene; opacity: 1}
-            PropertyChanges {target: window; activeScene: gameScene}
-            StateChangeScript {
-                script: {
-                    gameScene.enterScene()
-                    //audioManager.play(audioManager.idSWOOSHING)
-                }
-            }
+            name: "levelselect"
+            PropertyChanges {target: levelSelectScene; opacity: 1}
+            PropertyChanges {target: window; activeScene: levelSelectScene}
         }
     ]
 }
