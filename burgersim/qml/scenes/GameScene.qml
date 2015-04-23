@@ -6,7 +6,7 @@ import "../common"
 SceneBase {
     id: scene
     property string currentLevel;
-    property int timeLevel: 15
+    property int timeLevel: 100
 
     signal timeElapsed()
 
@@ -16,6 +16,7 @@ SceneBase {
     }
 
     Rectangle{
+        id: timerBackground
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.top: parent.top
@@ -75,6 +76,55 @@ SceneBase {
         }
     }
 
+    Rectangle{
+        id: orderBackground
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+
+        width: 150
+
+        radius: 10
+        border.color: "#61d9e4"
+        border.width: 3
+
+        Text{
+            id: orderHeader
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            font.pixelSize: 20
+            font.bold: true
+
+            text: "Order: (1/30)"
+        }
+        Flickable {
+            anchors.top: orderHeader.bottom
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins:5
+
+            contentWidth: orderText.width; contentHeight: orderText.height
+
+            clip:true
+
+            flickableDirection: Flickable.VerticalFlick
+
+            Text{
+                id: orderText
+
+                font.pixelSize: 20
+
+                text: "- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread\n- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread\n- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread"
+
+                function reset() { text = "" } //resets means emptying order table for now...
+            }
+        }
+    }
 
     /*
         This function loads a level reading a txt file describing how burgers are composed.
@@ -98,12 +148,14 @@ SceneBase {
 
         Data.data = lines;
 
+        //starting actual level
         timerText.start()
     }
 
     function reset()
     {
         timerText.reset();
+        orderText.reset();
     }
 
     onCurrentLevelChanged: {
