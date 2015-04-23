@@ -7,6 +7,8 @@ SceneBase {
     id: scene
     property string currentLevel;
     property int timeLevel: 100
+    property int totalBurgers: 0 //just default value
+    property int currentBurger: 0 //just default value
 
     signal timeElapsed()
 
@@ -82,7 +84,7 @@ SceneBase {
         anchors.rightMargin: 20
         anchors.top: parent.top
         anchors.topMargin: 20
-        anchors.bottom: parent.bottom
+        anchors.bottom: validateButton.top
         anchors.bottomMargin: 20
 
         width: 150
@@ -123,6 +125,20 @@ SceneBase {
 
                 function reset() { text = "" } //resets means emptying order table for now...
             }
+        }
+    }
+
+    ImageButton {
+        id: validateButton
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+
+        source: "../../assets/trashbutton.png"
+
+        onClicked: {
+            console.log("trash current burger");
         }
     }
 
