@@ -6,7 +6,7 @@ import "../common"
 SceneBase {
     id: scene
     property string currentLevel;
-    property int timeLevel: 10
+    property int timeLevel: 15
 
     signal timeElapsed()
 
@@ -15,51 +15,66 @@ SceneBase {
         anchors.bottom: scene.gameWindowAnchorItem.bottom
     }
 
-    Image {
-        id: title
+    Rectangle{
         anchors.left: parent.left
         anchors.leftMargin: 20
         anchors.top: parent.top
         anchors.topMargin: 20
-        source: "../../assets/timer.png"
-    }
 
-    Text{
-        id: timerText
 
-        property int time;
 
-        anchors.left: title.right
-        anchors.verticalCenter: title.verticalCenter
-        font.pixelSize: title.height
+        width: 80
+        height: 70
 
-        text: time
+        radius: 10
+        border.color: "#61d9e4"
+        border.width: 3
 
-        function reset() { timer.stop(); time = parent.timeLevel; }
-        function start() { reset(); timer.start() }
+        Text{
+            id: timerText
 
-        //do very first reset
-        Component.onCompleted: {
-            reset()
-        }
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
 
-        //checks every second if it is 0
-        //if it is, stop the timer and says scene manager time is over
-        onTimeChanged: {
-            if(time==0){
-                timer.stop()
-                timeElapsed()
+            property int time;
+
+            font.pixelSize: parent.height-20
+
+            text: time
+
+            function reset() { timer.stop(); time = scene.timeLevel; }
+            function start() { reset(); timer.start() }
+
+            //do very first reset
+            Component.onCompleted: {
+                reset()
+            }
+
+            //checks every second if it is 0
+            //if it is, stop the timer and says scene manager time is over
+            onTimeChanged: {
+                if(time==0){
+                    timer.stop()
+                    timeElapsed()
+                }
+
+                if(time<10){
+                    color = "red"
+                } else {
+                    color = "black"
+                }
+            }
+
+            Timer {
+                id: timer
+                interval: 1000; running: false; repeat: true
+                onTriggered: {
+                    parent.time -= 1
+                }
             }
         }
-
-        Timer {
-            id: timer
-            interval: 1000; running: false; repeat: true
-            onTriggered: {
-                parent.time -= 1
-            }
-        }
     }
+
 
     /*
         This function loads a level reading a txt file describing how burgers are composed.
