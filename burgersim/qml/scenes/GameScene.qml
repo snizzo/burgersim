@@ -101,7 +101,7 @@ SceneBase {
             font.pixelSize: 20
             font.bold: true
 
-            text: "Order: (1/30)"
+            text: "Order: ("+currentBurger.toString()+"/"+totalBurgers.toString()+")"
         }
         Flickable {
             anchors.top: orderHeader.bottom
@@ -164,8 +164,12 @@ SceneBase {
 
         Data.data = lines;
 
+        //setting number of total burgers in level and current burger
+        scene.totalBurgers = lines.length;
+        scene.currentBurger = 1;
+
         //starting actual level
-        timerText.start()
+        timerText.start();
     }
 
     function reset()
