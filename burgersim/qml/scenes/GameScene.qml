@@ -10,6 +10,10 @@ SceneBase {
     property int totalBurgers: 0 //just default value
     property int currentBurger: 0 //just default value
 
+    onCurrentBurgerChanged: {
+        orderText.writeOrder();
+    }
+
     signal timeElapsed()
 
     Background {
@@ -121,9 +125,52 @@ SceneBase {
 
                 font.pixelSize: 20
 
-                text: "- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread\n- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread\n- Top Bread\n- Hamburger\n- Salad\n- Bottom Bread"
+                text: "waiting order..." //should not be readable
 
                 function reset() { text = "" } //resets means emptying order table for now...
+
+                function writeOrder()
+                {
+                    if(currentBurger!=0){
+                        reset(); //resetting order
+
+                        var burgerData = Data.data[scene.currentBurger-1];
+
+                        //parsing char per char and writing a readable order
+                        for (var i=0, len = burgerData.length; i<len; i++) {
+                            switch(burgerData[i]){
+                                case 'b':
+                                    text += "- Bottom bread\n"
+                                    break;
+                                case 'u':
+                                    text += "- Upper bread\n"
+                                    break;
+                                case 'h':
+                                    text += "- Hamburger\n"
+                                    break;
+                                case 'c':
+                                    text += "- Cheese\n"
+                                    break;
+                                case 'k':
+                                    text += "- Tomatoes\n"
+                                    break;
+                                case 's':
+                                    text += "- Salad\n"
+                                    break;
+                                case 'B':
+                                    text += "- Bacon\n"
+                                    break;
+                                case 'e':
+                                    text += "- Eggs\n"
+                                    break;
+                            }
+                        }
+
+                        text = text.trim() //erasing last useless newline
+                    }
+
+                }
+
             }
         }
     }
@@ -139,6 +186,7 @@ SceneBase {
 
         onClicked: {
             console.log("trash current burger");
+            currentBurger += 1
         }
     }
 
@@ -176,6 +224,8 @@ SceneBase {
     {
         timerText.reset();
         orderText.reset();
+        totalBurgers = 0;
+        currentBurger = 0;
     }
 
     onCurrentLevelChanged: {
