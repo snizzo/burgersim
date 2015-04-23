@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import VPlay 2.0
+import "../common/data.js" as Data
 import "../common"
 
 SceneBase {
@@ -34,7 +35,7 @@ SceneBase {
 
         text: time
 
-        function reset() { time = parent.timeLevel; }
+        function reset() { timer.stop(); time = parent.timeLevel; }
         function start() { reset(); timer.start() }
 
         //do very first reset
@@ -77,17 +78,24 @@ SceneBase {
     }
 
     function parseLevel(data){
-        //parse txt file and put it into data,
-        //then do interface and build burger and
-        //validate burger and won level
+        var lines = data.split("\n");
+        lines = lines.filter(function(n){ return n != "" });
 
-        //once loaded, start timer
-        timer.start()
+        Data.data = lines;
+
+        timerText.start()
+    }
+
+    function reset()
+    {
+        timerText.reset();
     }
 
     onCurrentLevelChanged: {
         if(currentLevel){
             loadLevel(currentLevel)
+        } else {
+            scene.reset()
         }
     }
 
