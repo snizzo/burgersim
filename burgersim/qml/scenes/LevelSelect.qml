@@ -3,36 +3,44 @@ import QtQuick 2.0
 Grid {
     columns: 4
     spacing: 10
-    ImageButton {
-        source: "../../assets/level1.png"
+
+    signal playLevel(string name)
+
+    LevelButton {
+        name: "level1"
     }
-    ImageButton {
-        source: "../../assets/level2.png"
+    LevelButton{
+        name: "level2"
     }
-    ImageButton {
-        source: "../../assets/level3.png"
+    LevelButton{
+        name: "level3"
     }
-    ImageButton {
-        source: "../../assets/level4.png"
+    LevelButton{
+        name: "level4"
     }
-    ImageButton {
-        source: "../../assets/level5.png"
+    LevelButton{
+        name: "level5"
     }
-    ImageButton {
-        source: "../../assets/level6.png"
+    LevelButton{
+        name: "level6"
     }
-    ImageButton {
-        source: "../../assets/level7.png"
+    LevelButton{
+        name: "level7"
     }
-    ImageButton {
-        source: "../../assets/level8.png"
+    LevelButton{
+        name: "level8"
     }
-    ImageButton {
-        source: "../../assets/level9.png"
+    LevelButton{
+        name: "level9"
     }
-    ImageButton {
-        source: "../../assets/level10.png"
+    LevelButton{
+        name: "level10"
     }
+
+
+
+
+
     /*
       TODO: implement endless?
     ImageButton {

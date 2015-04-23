@@ -42,35 +42,36 @@ Item {
             mainItem.state = "menu"
         }
 
-        /*
-        onMenuPressed: {
-            mainItem.state = "menu"
+        onPlayLevel: {
+            mainItem.state = "game"
         }
-        onNetworkPressed: {
-            vplayGameNetworkScene.initialStateBeforeShow = "game"
-            mainItem.state = "gameNetwork"
-        }
-        onUseCoinsPressed: {
-        }
-        */
     }
 
 
-    /*
+
     GameScene {
         id: gameScene
 
-        onMenuPressed: {
-            mainItem.state = "menu"
+        onBackButtonPressed: {
+            nativeUtils.displayMessageBox("Abort the level?", "", 2);
         }
-        onNetworkPressed: {
-            vplayGameNetworkScene.initialStateBeforeShow = "game"
-            mainItem.state = "gameNetwork"
+
+        Connections {
+            // nativeUtils should only be connected, when this is the active scene
+            target: window.activeScene === gameScene ? nativeUtils : null
+            onMessageBoxFinished: {
+                if(accepted) {
+                    mainItem.state = "levelselect"
+                }
+            }
         }
-        onUseCoinsPressed: {
+
+        onTimeElapsed: {
+            console.log("time elapsed signal")
+            //TODO: do lost scene with maybe score?
+            //mainItem.state = "lost"
         }
     }
-    */
 
     state: "menu"
 
@@ -89,6 +90,12 @@ Item {
             name: "levelselect"
             PropertyChanges {target: levelSelectScene; opacity: 1}
             PropertyChanges {target: window; activeScene: levelSelectScene}
+        },
+        State {
+            name: "game"
+            PropertyChanges {target: gameScene; opacity: 1}
+            PropertyChanges {target: window; activeScene: gameScene}
+            PropertyChanges {target: gameScene; currentLevel: levelSelectScene.selected}
         }
     ]
 }

@@ -1,0 +1,21 @@
+Small and handy definition of burgersim level format:
+    b : bottom bread
+    u : upper bread
+    h : hamburger
+    c : cheese
+    k : ketchup
+    s : salad
+    B : bacon
+    e : eggs
+
+Each level is composed by a list of string separated by newlines and every character (from left
+to right) describes the necessary ingredients to compose the burger. The user has to select the ingredients
+in the correct order. If this is done in time, the client will be satisfacted, otherwise the player loses.
+
+Example of level file. This has 3 hamburgers to be done in order to be completed:
+
+bhckcu
+bkseBhu
+bhchshehu
+
+
