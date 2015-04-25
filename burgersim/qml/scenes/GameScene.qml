@@ -9,6 +9,8 @@ SceneBase {
     property int timeLevel: 100
     property int totalBurgers: 0 //just default value
     property int currentBurger: 0 //just default value
+    property string codedBurger: ""
+    property int currentIngredient: 0
 
     onCurrentBurgerChanged: {
         orderText.writeOrder();
@@ -30,8 +32,8 @@ SceneBase {
 
 
 
-        width: 80
-        height: 70
+        width: 120
+        height: 60
 
         radius: 10
         border.color: "#61d9e4"
@@ -175,12 +177,167 @@ SceneBase {
         }
     }
 
+    Rectangle{
+        id: ingredientsBackground
+        anchors.left: timerBackground.left
+        anchors.top: timerBackground.bottom
+        anchors.topMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 20
+        anchors.right: timerBackground.right
+
+        width: 150
+
+        radius: 10
+        border.color: "#61d9e4"
+        border.width: 3
+
+        Grid{
+            anchors.fill: parent
+            anchors.margins: 10
+            columns: 2
+            spacing: 2
+
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/B_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("B")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/b_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("b")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/c_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("c")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/e_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("e")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/h_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("h")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/k_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("k")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/s_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("s")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/t_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("t")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/u_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("u")
+                    }
+                }
+            }
+            Image{
+                width: parent.width/2
+                height: parent.height/5
+                source: "../../assets/ingredients/b_icon.png"
+                smooth: false
+                MouseArea{
+                    anchors.fill: parent
+
+                    onClicked: {
+                        addIngredient("b")
+                    }
+                }
+            }
+        }
+    }
+
     ImageButton {
         id: validateButton
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 20
+        anchors.horizontalCenter: orderBackground.horizontalCenter
+
+        width:100
 
         source: "../../assets/trashbutton.png"
 
@@ -220,12 +377,48 @@ SceneBase {
         timerText.start();
     }
 
+    function addIngredient(ingredient)
+    {
+        switch(ingredient){
+            case 'b':
+                codedBurger += ingredient;
+                break;
+            case 'u':
+                codedBurger += ingredient;
+                break;
+            case 'h':
+                codedBurger += ingredient;
+                break;
+            case 'c':
+                codedBurger += ingredient;
+                break;
+            case 'k':
+                codedBurger += ingredient;
+                break;
+            case 's':
+                codedBurger += ingredient;
+                break;
+            case 'B':
+                codedBurger += ingredient;
+                break;
+            case 't':
+                codedBurger += ingredient;
+                break;
+            case 'e':
+                codedBurger += ingredient
+                break;
+        }
+        console.log(codedBurger)
+    }
+
     function reset()
     {
         timerText.reset();
         orderText.reset();
         totalBurgers = 0;
         currentBurger = 0;
+        codedBurger = "";
+        currentIngredient = 0;
     }
 
     onCurrentLevelChanged: {
