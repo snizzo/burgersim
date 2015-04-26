@@ -2,14 +2,14 @@ import VPlay 2.0
 import QtQuick 2.0
 import "scenes"
 import "common"
+import "entities"
 
 Item {
     id: mainItem
-    property alias audioManager: audioManager
 
-    // global music and sound management
-    AudioManager {
-        id: audioManager
+    EntityManager {
+        id: entityManager
+        entityContainer: gameScene
     }
 
     MenuScene {
@@ -48,7 +48,6 @@ Item {
     }
 
 
-
     GameScene {
         id: gameScene
 
@@ -70,6 +69,10 @@ Item {
             console.log("time elapsed signal")
             //TODO: do lost scene with maybe score?
             //mainItem.state = "lost"
+        }
+
+        onLevelEnded: {
+            console.log("level won")
         }
     }
 

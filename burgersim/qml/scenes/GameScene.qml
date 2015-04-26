@@ -2,6 +2,7 @@ import QtQuick 2.0
 import VPlay 2.0
 import "../common/data.js" as Data
 import "../common"
+import "../entities"
 
 SceneBase {
     id: scene
@@ -9,14 +10,19 @@ SceneBase {
     property int timeLevel: 100
     property int totalBurgers: 0 //just default value
     property int currentBurger: 0 //just default value
+    property string rightBurger: ""
     property string codedBurger: ""
-    property int currentIngredient: 0
 
     onCurrentBurgerChanged: {
-        orderText.writeOrder();
+        if(currentBurger > totalBurgers) {
+            levelEnded();
+        } else {
+            orderText.writeOrder();
+        }
     }
 
     signal timeElapsed()
+    signal levelEnded()
 
     Background {
         anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
@@ -138,37 +144,44 @@ SceneBase {
 
                         var burgerData = Data.data[scene.currentBurger-1];
 
-                        //parsing char per char and writing a readable order
-                        for (var i=0, len = burgerData.length; i<len; i++) {
-                            switch(burgerData[i]){
-                                case 'b':
-                                    text += "- Bottom bread\n"
-                                    break;
-                                case 'u':
-                                    text += "- Upper bread\n"
-                                    break;
-                                case 'h':
-                                    text += "- Hamburger\n"
-                                    break;
-                                case 'c':
-                                    text += "- Cheese\n"
-                                    break;
-                                case 'k':
-                                    text += "- Tomatoes\n"
-                                    break;
-                                case 's':
-                                    text += "- Salad\n"
-                                    break;
-                                case 'B':
-                                    text += "- Bacon\n"
-                                    break;
-                                case 'e':
-                                    text += "- Eggs\n"
-                                    break;
+                        if(burgerData!=undefined){
+                            rightBurger = burgerData
+
+                            //parsing char per char and writing a readable order
+                            for (var i=0, len = burgerData.length; i<len; i++) {
+                                switch(burgerData[i]){
+                                    case 'b':
+                                        text += "- Bottom bread\n"
+                                        break;
+                                    case 'u':
+                                        text += "- Upper bread\n"
+                                        break;
+                                    case 'h':
+                                        text += "- Hamburger\n"
+                                        break;
+                                    case 'c':
+                                        text += "- Cheese\n"
+                                        break;
+                                    case 'k':
+                                        text += "- Ketchup\n"
+                                        break;
+                                    case 't':
+                                        text += "- Tomato\n"
+                                        break;
+                                    case 's':
+                                        text += "- Salad\n"
+                                        break;
+                                    case 'a':
+                                        text += "- Bacon\n"
+                                        break;
+                                    case 'e':
+                                        text += "- Eggs\n"
+                                        break;
+                                }
                             }
                         }
 
-                        text = text.trim() //erasing last useless newline
+                        text = text.trim() //erasing last useless newline if present
                     }
 
                 }
@@ -201,13 +214,13 @@ SceneBase {
             Image{
                 width: parent.width/2
                 height: parent.height/5
-                source: "../../assets/ingredients/B_icon.png"
+                source: "../../assets/ingredients/a_icon.png"
                 smooth: false
                 MouseArea{
                     anchors.fill: parent
 
                     onClicked: {
-                        addIngredient("B")
+                        addIngredient("a")
                     }
                 }
             }
@@ -315,19 +328,6 @@ SceneBase {
                     }
                 }
             }
-            Image{
-                width: parent.width/2
-                height: parent.height/5
-                source: "../../assets/ingredients/b_icon.png"
-                smooth: false
-                MouseArea{
-                    anchors.fill: parent
-
-                    onClicked: {
-                        addIngredient("b")
-                    }
-                }
-            }
         }
     }
 
@@ -339,11 +339,32 @@ SceneBase {
 
         width:100
 
-        source: "../../assets/trashbutton.png"
 
-        onClicked: {
-            console.log("trash current burger");
-            currentBurger += 1
+        state: "trash"
+
+        states: [
+            State {
+                name: "trash"
+                when: (codedBurger != rightBurger)
+                PropertyChanges {target: validateButton; source: "../../assets/trashbutton.png"}
+            },
+            State {
+                name: "send"
+                when: (codedBurger == rightBurger)
+                PropertyChanges {target: validateButton; source: "../../assets/okbutton.png"}
+            }
+        ]
+
+        onClicked: {    
+            if(state=="trash"){
+                entityManager.removeAllEntities();
+            } else if(state=="send") {
+                entityManager.removeAllEntities();
+                if(currentBurger!=totalBurgers)
+                    currentBurger += 1;
+            }
+
+            codedBurger = "";
         }
     }
 
@@ -379,36 +400,15 @@ SceneBase {
 
     function addIngredient(ingredient)
     {
-        switch(ingredient){
-            case 'b':
-                codedBurger += ingredient;
-                break;
-            case 'u':
-                codedBurger += ingredient;
-                break;
-            case 'h':
-                codedBurger += ingredient;
-                break;
-            case 'c':
-                codedBurger += ingredient;
-                break;
-            case 'k':
-                codedBurger += ingredient;
-                break;
-            case 's':
-                codedBurger += ingredient;
-                break;
-            case 'B':
-                codedBurger += ingredient;
-                break;
-            case 't':
-                codedBurger += ingredient;
-                break;
-            case 'e':
-                codedBurger += ingredient
-                break;
-        }
-        console.log(codedBurger)
+        codedBurger += ingredient;
+        entityManager.createEntityFromUrlWithProperties(
+                    Qt.resolvedUrl("../../qml/entities/Ingredient.qml"),
+                    {
+                        entityId: "ingredient"+codedBurger.length.toString(),
+                        x:220,
+                        y:250-12*codedBurger.length,
+                        source:"../../../assets/ingredients/"+ingredient+".png"
+                    })
     }
 
     function reset()
@@ -418,7 +418,7 @@ SceneBase {
         totalBurgers = 0;
         currentBurger = 0;
         codedBurger = "";
-        currentIngredient = 0;
+
     }
 
     onCurrentLevelChanged: {
