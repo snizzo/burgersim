@@ -7,7 +7,7 @@ import "../entities"
 SceneBase {
     id: scene
     property string currentLevel;
-    property int timeLevel: 100
+    property int timeLevel: 150
     property int totalBurgers: 0 //just default value
     property int currentBurger: 0 //just default value
     property string rightBurger: ""
