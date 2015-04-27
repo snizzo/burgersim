@@ -14,6 +14,7 @@ SceneBase {
     property string codedBurger: ""
 
     onCurrentBurgerChanged: {
+        console.log(currentBurger)
         if(currentBurger > totalBurgers) {
             levelEnded();
         } else {
@@ -27,6 +28,16 @@ SceneBase {
     Background {
         anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: scene.gameWindowAnchorItem.bottom
+    }
+
+    Image{
+        id:lose
+
+        anchors.fill: parent
+        z:1
+        visible:false
+
+        source: "../../assets/lose.png"
     }
 
     Rectangle{
@@ -358,10 +369,10 @@ SceneBase {
         onClicked: {    
             if(state=="trash"){
                 entityManager.removeAllEntities();
+                codedBurger = "";
             } else if(state=="send") {
                 entityManager.removeAllEntities();
-                if(currentBurger!=totalBurgers)
-                    currentBurger += 1;
+                currentBurger += 1;
             }
 
             codedBurger = "";

@@ -48,6 +48,22 @@ Item {
     }
 
 
+    WinScene {
+        id: winScene
+
+        onBackButtonPressed: {
+            mainItem.state = "menu"
+        }
+    }
+
+    LoseScene {
+        id: loseScene
+
+        onBackButtonPressed: {
+            mainItem.state = "menu"
+        }
+    }
+
     GameScene {
         id: gameScene
 
@@ -66,13 +82,11 @@ Item {
         }
 
         onTimeElapsed: {
-            console.log("time elapsed signal")
-            //TODO: do lost scene with maybe score?
-            //mainItem.state = "lost"
+            mainItem.state = "lose"
         }
 
         onLevelEnded: {
-            console.log("level won")
+            mainItem.state = "win"
         }
     }
 
@@ -99,6 +113,16 @@ Item {
             PropertyChanges {target: gameScene; opacity: 1}
             PropertyChanges {target: window; activeScene: gameScene}
             PropertyChanges {target: gameScene; currentLevel: levelSelectScene.selected}
+        },
+        State {
+            name: "win"
+            PropertyChanges {target: winScene; opacity: 1}
+            PropertyChanges {target: window; activeScene: winScene}
+        },
+        State {
+            name: "lose"
+            PropertyChanges {target: loseScene; opacity: 1}
+            PropertyChanges {target: window; activeScene: loseScene}
         }
     ]
 }
