@@ -21,19 +21,6 @@ SceneBase {
         anchors.top: parent.top
         anchors.topMargin: 20
         source: "../../assets/selectlevel.png"
-
-        //TODO: works on mobile ? keep : delete
-        /*
-        DropShadow {
-            anchors.fill: title
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 6.0
-            samples: 16
-            color: "#80000000"
-            source: title
-        }
-        */
     }
 
     LevelSelect {

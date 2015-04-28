@@ -30,16 +30,6 @@ SceneBase {
         anchors.bottom: scene.gameWindowAnchorItem.bottom
     }
 
-    Image{
-        id:lose
-
-        anchors.fill: parent
-        z:1
-        visible:false
-
-        source: "../../assets/lose.png"
-    }
-
     Rectangle{
         id: timerBackground
         anchors.left: parent.left
@@ -367,14 +357,10 @@ SceneBase {
         ]
 
         onClicked: {    
-            if(state=="trash"){
-                entityManager.removeAllEntities();
-                codedBurger = "";
-            } else if(state=="send") {
-                entityManager.removeAllEntities();
+            if(state=="send") {
                 currentBurger += 1;
             }
-
+            entityManager.removeAllEntities();
             codedBurger = "";
         }
     }

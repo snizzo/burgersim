@@ -5,7 +5,7 @@ Small and handy definition of burgersim level format:
     c : cheese
     k : ketchup
     s : salad
-    B : bacon
+    a : bacon
     e : eggs
 
 Each level is composed by a list of string separated by newlines and every character (from left
